@@ -1,5 +1,7 @@
 package com.chettergames.texasholdem;
 
+import com.chettergames.texasholdem.Card.Type;
+
 public class Game {
 	
 	public void dealStart()
@@ -8,7 +10,6 @@ public class Game {
 	}
 	public void dealFlop()
 	{
-		//deals flop after a round of betting
 	}
 	public void dealTurn()
 	{
@@ -26,6 +27,24 @@ public class Game {
 	public void checkForHighestHand()
 	{
 		//after the final playRound occurs, method checks for winner
+	}
+	
+	public static void main(String args[])
+	{
+		Deck deck = new Deck();
+		deck.printDeckToConsole();
+		
+		Card card1 = deck.drawCard();
+		Card card2 = deck.drawCard();
+		Card card3 = deck.drawCard();
+		
+		System.out.println("==============");
+		System.out.println("Card 1: " + card1);
+		System.out.println("Card 2: " + card2);
+		System.out.println("Card 3: " + card3);
+		System.out.println("==============");
+		
+		deck.printDeckToConsole();
 	}
 
 }
