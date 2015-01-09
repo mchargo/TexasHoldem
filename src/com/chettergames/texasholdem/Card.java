@@ -1,5 +1,8 @@
 package com.chettergames.texasholdem;
 
-public class Card {
-
+public class Card 
+{
+	int cardValue;
+	String cardType;
+	
 }
