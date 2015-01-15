@@ -2,6 +2,8 @@ package com.chettergames.net;
 
 public class Output 
 {
+	public static final boolean GAME_DEBUG = true;
+	
 	public static final boolean NET_DEBUG = true;
 	public static final boolean NET_DEBUG_VER = true;
 	public static final boolean NET_ERR = true;
@@ -46,5 +48,29 @@ public class Output
 	{
 		if(NET_ERR)
 			e.printStackTrace();
+	}
+	
+	public static final void game(String message)
+	{
+		if(GAME_DEBUG)
+			System.out.print(message);
+	}
+	
+	public static final void gameln(String message)
+	{
+		if(GAME_DEBUG)
+			System.out.println(message);
+	}
+	
+	public static final void gameok()
+	{
+		if(GAME_DEBUG)
+			System.out.println("[ OK ]");
+	}
+	
+	public static final void gamefail()
+	{
+		if(GAME_DEBUG)
+			System.out.println("[FAIL]");
 	}
 }
