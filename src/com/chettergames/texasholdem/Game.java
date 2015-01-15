@@ -1,7 +1,5 @@
 package com.chettergames.texasholdem;
 
-import com.chettergames.texasholdem.Card.Type;
-
 public class Game {
 	
 	public void dealStart()
@@ -46,5 +44,4 @@ public class Game {
 		
 		deck.printDeckToConsole();
 	}
-
 }
