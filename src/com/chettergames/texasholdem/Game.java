@@ -253,7 +253,7 @@ public class Game
 
 	public void newTestGame()
 	{
-		for(int x = 0;x < players.length;x++)
+		for(int x = 0;x < 3;x++)
 			addPlayer(new ComputerPlayer(x));
 	}
 
