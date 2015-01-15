@@ -16,6 +16,18 @@ public class Game
 
 	public int playerCount()
 	{
+		int playersLength = players.length;
+		int count = 0;
+		
+		for(int index = 0; index<players.length; index++)
+		{
+			if(players[index]!=null)
+			{
+				count++;
+				return count;
+			}
+			
+		}
 		/**
 		 * Implement this first.
 		 * 
@@ -42,6 +54,16 @@ public class Game
 
 	public synchronized boolean addPlayer(Player p)
 	{
+		int index;
+		for(index = 0; index<players.length; index++)
+		{
+			if(players[index]==null)
+			{
+				players[index] = p;
+				return true;
+			}
+			
+		}
 		/**
 		 * Add a player to the game.
 		 * 
