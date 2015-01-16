@@ -16,40 +16,16 @@ public class Game
 
 	public int playerCount()
 	{
-		int playersLength = players.length;
 		int count = 0;
-		
+
 		for(int index = 0; index<players.length; index++)
 		{
 			if(players[index]!=null)
 			{
 				count++;
-				return count;
 			}
-			
 		}
-		/**
-		 * Implement this first.
-		 * 
-		 * Count the players in the 'players' array.
-		 * 
-		 * How do I do this?
-		 * 
-		 * For each element in the players array,
-		 * check if it is equal to null. If it is
-		 * not equal to null, there is a player
-		 * in that position. If the element is
-		 * equal to null, that position is open
-		 * for another player to join. The length
-		 * of the players array can be found using:
-		 * 
-		 * int playersLength = players.length;
-		 * 
-		 * NOTE: only count a player if they are ready
-		 * to play.
-		 */
-
-		return 0;
+		return count;
 	}
 
 	public synchronized boolean addPlayer(Player p)
@@ -62,25 +38,8 @@ public class Game
 				players[index] = p;
 				return true;
 			}
-			
-		}
-		/**
-		 * Add a player to the game.
-		 * 
-		 * How do I do this?
-		 *
-		 * Find a position in the array where
-		 * the element is equal to null. If
-		 * there are no such positions, then
-		 * the game is full and we should
-		 * return false. If we are able to
-		 * add a player to the array, return
-		 * true.
-		 * 
-		 * make sure you call promptForName()
-		 * on each player when they are added.
-		 */
 
+		}
 		return false;
 	}
 
@@ -227,7 +186,7 @@ public class Game
 					continue;
 				}catch(Exception e){e.printStackTrace();}
 			}
-			
+
 			// check for people who need to join the game.
 			for(Player p : players)
 				if(p != null)
