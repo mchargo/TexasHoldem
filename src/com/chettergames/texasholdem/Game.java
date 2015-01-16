@@ -7,11 +7,12 @@ import com.chettergames.net.Output;
 
 public class Game 
 {
-	public Game(int playerCount, int startingChips)
+	public Game(int playerCount, int startingChips, int startingAnte)
 	{
 		players = new Player[playerCount];
 		Arrays.fill(players, null);
 		this.startChips = startingChips;
+		this.startingAnte = startingAnte;
 	}
 
 	public int playerCount()
@@ -188,7 +189,7 @@ public class Game
 			Deck deck = new Deck();
 
 			prepareForNewRound(); // prepare for new round
-			getAntes(); // get ante from players
+			getAntes(startingAnte); // get ante from players
 			dealStart(deck); // deal cards to players
 			playRound(); // play a round of betting
 			dealFlop(deck); // deal the flop
@@ -212,10 +213,11 @@ public class Game
 	private Player[] players;
 	private int pot;
 	private int startChips;
+	private int startingAnte;
 
 	public static void main(String args[])
 	{
-		Game game = new Game(6, 1000);
+		Game game = new Game(6, 1000, 10);
 		game.newTestGame();
 		game.postPlayGame();
 	}
