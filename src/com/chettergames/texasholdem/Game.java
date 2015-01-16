@@ -67,42 +67,33 @@ public class Game
 
 	public void prepareForNewRound()
 	{
-		/**
-		 * Tell each player that a new round
-		 * of poker is about to start.
-		 * 
-		 * How do I do this?
-		 * 
-		 * For each element in players,
-		 * if the element is not equal to null
-		 * we know there is a valid player
-		 * there. Tell that player to prepare
-		 * for a new round by calling:
-		 * 
-		 * player.newRound();
-		 * 
-		 * Also you should clear all of the
-		 * cards on the table and reset the pot.
-		 */
-
-
+		for (int index=0; index<players.length; index++)
+		{
+			if(players[index]!=null)
+			{
+				if(players[index].isPlaying())
+				{
+					players[index].newRound();
+				}
+			}
+		}
+		pot = 0;
+		tableCards= new Card[5];
 	}
-
-	public void getAntes()
+	public void getAntes(int amount)
 	{
-		/**
-		 * Get the antes from all of the players
-		 * and add the result to the pot.
-		 * 
-		 * How do I do this?
-		 * 
-		 * Ask each player for their ante using:
-		 * 
-		 * int bet = player.getAnte();
-		 * 
-		 * If the player is folded, do not ask
-		 * them for their ante.
-		 */
+
+		for(int index = 0; index<players.length; index++)
+		{
+			if(players[index]!=null)
+			{
+				if(!players[index].isFolded())
+				{
+					int ante = players[index].ante(amount);
+					pot+=ante;
+				}
+			}
+		}
 	}
 
 	public void dealStart(Deck deck)
