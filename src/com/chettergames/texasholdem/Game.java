@@ -230,8 +230,9 @@ public class Game
 			
 			// check for people who need to join the game.
 			for(Player p : players)
-				if(p.isReady() && !p.isPlaying())
-					p.joinGame(startChips);
+				if(p != null)
+					if(p.isReady() && !p.isPlaying())
+						p.joinGame(startChips);
 
 
 			Deck deck = new Deck();
