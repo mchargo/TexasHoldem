@@ -123,8 +123,6 @@ public class Game
 		 */
 	}
 
-
-
 	public void dealFlop(Deck deck)
 	{
 		deck.drawCard();
