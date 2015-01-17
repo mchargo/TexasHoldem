@@ -1,6 +1,5 @@
 package com.chettergames.texasholdem;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 import com.chettergames.net.Output;
@@ -128,28 +127,23 @@ public class Game
 
 	public void dealFlop(Deck deck)
 	{
-		/**
-		 * Put the flop onto the table.
-		 * 
-		 * How do I do this?
-		 * 
-		 * If you remember, we reset the cards
-		 * on the cards using tableCards. We
-		 * reset the array to be a blank array
-		 * with 5 cards in it. Now we have to
-		 * deal the flop and put the cards
-		 * onto the table.
-		 */
+		deck.drawCard();
+		tableCards[0]=deck.drawCard();
+		tableCards[1]=deck.drawCard();
+		tableCards[2]=deck.drawCard();
 	}
 
 	public void dealTurn(Deck deck)
 	{
+		deck.drawCard();
+		tableCards[3]=deck.drawCard();
 
 	}
 
 	public void dealRiver(Deck deck)
 	{
-
+		deck.drawCard();
+		tableCards[4]=deck.drawCard();
 	}
 
 
@@ -157,6 +151,62 @@ public class Game
 	{
 		
 	}
+	
+	public boolean checkForPair(Card cards[])
+	{
+		int card1=cards[0].getValue();
+		int card2=cards[1].getValue();
+		int card3=cards[2].getValue();
+		int card4=cards[3].getValue();
+		int card5=cards[4].getValue();
+		int card6=cards[5].getValue();
+		int card7=cards[6].getValue();
+		int cardValues[]= new int[13];
+		
+		//if()
+		return false;
+	}
+	
+	public boolean checkForTwoPair()
+	{
+		return false;
+	}
+	
+	public boolean checkForThreeOfAKind()
+	{
+		return false;
+	}
+	
+	public boolean checkForStraight()
+	{
+		return false;
+	}
+	
+	public boolean checkForFlush()
+	{
+		return false;
+	}
+	
+	public boolean checkForFullHouse()
+	{
+		return false;
+	}
+	
+	public boolean checkForFourOfAKind()
+	{
+		return false;
+	}
+	
+	public boolean checkForStraightFlush()
+	{
+		return false;
+	}
+	
+	public boolean checkForRoyalFlush()
+	{
+		return false;
+	}
+	
 
 	/**
 	 * Play the game on a new Thread.
