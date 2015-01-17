@@ -145,7 +145,7 @@ public class Game
 	}
 
 
-	public void checkForHighestHand()s
+	public void checkForHighestHand()
 	{
 		
 	}
