@@ -99,30 +99,55 @@ public class Game
 
 	public void dealStart(Deck deck)
 	{
-		/**
-		 * Deal 2 cards to each player like
-		 * you would in poker.
-		 * 
-		 * How do I do this?
-		 * 
-		 * In poker, you deal one card to each
-		 * player at a time in a circle, so
-		 * for each player that is playing
-		 * we should deal one card to them.
-		 * Once we are done with that, we should
-		 * deal them all another card.
-		 * 
-		 * 
-		 */
+		for(int dealtCard =0; dealtCard<2; dealtCard++)
+		{
+			for(int index =0; index<players.length; index++)
+			{
+				if(players[index]!=null)
+				{
+					if(!players[index].isFolded())
+					{
+						players[index].recieveCard(deck.drawCard());
+					}
+				}
+			}
+		}
 	}
 
 	public void playRound()
 	{
-		/**
-		 * Do a round of betting in poker.
-		 */
-	}
+		Player lastRaise = null;
+		int currentCall=0;
+		for(int index =0; ;index++)
+		{
+			if(index==players.length)
+			{
+				index=0;
+			}
+			if(players[index]!=null)
+			{
+				if(!players[index].isFolded())
+				{
+					if(lastRaise==null)
+					{
+						lastRaise=players[index];
+					}else if(lastRaise==players[index]){
+						break;
+					}
+					int roundBet=players[index].getRoundBet();
+					int bet = players[index].getBet(currentCall);
+					int playerTotalBet= bet+roundBet;
+					pot+=bet;
+					if(playerTotalBet>currentCall)
+					{
+						lastRaise=players[index];
+						currentCall=playerTotalBet;
+					}
 
+				}
+			}
+		}
+	}
 	public void dealFlop(Deck deck)
 	{
 		deck.drawCard();
