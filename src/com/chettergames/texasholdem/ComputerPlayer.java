@@ -10,33 +10,33 @@ public class ComputerPlayer extends Player
 	{
 		super(number);
 	}
-	
+
 	public void newRound()
 	{
 		cpuPause();
 		super.newRound();
 		Output.gameln(name + " is ready for a new round of poker.");
 	}
-	
+
 	public int ante(int ante)
 	{
 		cpuPause();
 		int playerAnte = super.ante(ante);
-		
+
 		if(ante == -1)
 			Output.gameln(name + " doesn't have enough chips to play.");
 		else Output.gameln(name + " anted " + playerAnte + " chips.");
-		
+
 		return playerAnte;
 	}
-	
+
 	public void wonPot(int chipsWon)
 	{
 		cpuPause();
 		super.wonPot(chipsWon);
 		Output.gameln(name + " won " + chipsWon + " chips.");
 	}
-	
+
 	public void newBettingRound()
 	{
 		cpuPause();
@@ -49,26 +49,40 @@ public class ComputerPlayer extends Player
 	{
 		cpuPause();
 		Random random = new Random(System.nanoTime());
-		int max = random.nextInt(50);
-		if(currentBet > max)
-			max = currentBet;
-		
-		myRoundBet += max;
-		
-		if(max > chips)
+		int max = 0;
+
+		if(currentBet == chips + getRoundBet())
 		{
-			Output.gameln(name + " has folded.");
-			myRoundBet = 0;
-			folded = true;
-			return -1;
-		}else {
-			if(max == currentBet)
+			max = chips;
+			Output.gameln(name + " is all in.");
+		} else if(random.nextInt(6) == 0)
+		{
+			// we are going to raise
+			max = currentBet - getRoundBet();
+			max += random.nextInt(50) + 5;
+
+			if(max > chips)
+			{
+				max = chips;
+				Output.gameln(name + " is all in.");
+			} else Output.gameln(name + " has raised.");
+		}else{
+			// we will just call
+			max = currentBet - getRoundBet();
+			if(max > chips)
+			{
+				myRoundBet = 0;
+				folded = true;
+				max = -1;
+				Output.gameln(name + " has folded.");
+			}else{
 				Output.gameln(name + " has called.");
-			else Output.gameln(name + " has raised by " + (max - currentBet) + " chips.");
-			return max;
+			}
 		}
+
+		return max;
 	}
-	
+
 	@Override
 	public void recieveCard(Card card)
 	{
@@ -76,7 +90,7 @@ public class ComputerPlayer extends Player
 		super.recieveCard(card);
 		Output.gameln(name + " got card: " + card);
 	} 
-	
+
 	public void joinGame(int startChips)
 	{
 		super.joinGame(startChips);
@@ -94,7 +108,7 @@ public class ComputerPlayer extends Player
 	{
 		return name != null;
 	}
-	
+
 	private void cpuPause()
 	{
 		try
