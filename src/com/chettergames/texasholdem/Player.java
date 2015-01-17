@@ -1,6 +1,4 @@
-    package com.chettergames.texasholdem;
-
-import com.chettergames.net.Output;
+package com.chettergames.texasholdem;
 
 public abstract class Player 
 {

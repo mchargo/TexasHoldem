@@ -37,6 +37,7 @@ public class Game
 			if(players[index]==null)
 			{
 				players[index] = p;
+				p.promptForName();
 				return true;
 			}
 
@@ -99,54 +100,28 @@ public class Game
 
 	public void dealStart(Deck deck)
 	{
-		for(int dealtCard =0; dealtCard<2; dealtCard++)
-		{
-			for(int index =0; index<players.length; index++)
-			{
-				if(players[index]!=null)
-				{
-					if(!players[index].isFolded())
-					{
-						players[index].recieveCard(deck.drawCard());
-					}
-				}
-			}
-		}
+		/**
+		 * Deal 2 cards to each player like
+		 * you would in poker.
+		 * 
+		 * How do I do this?
+		 * 
+		 * In poker, you deal one card to each
+		 * player at a time in a circle, so
+		 * for each player that is playing
+		 * we should deal one card to them.
+		 * Once we are done with that, we should
+		 * deal them all another card.
+		 * 
+		 * 
+		 */
 	}
 
 	public void playRound()
 	{
-		Player lastRaise = null;
-		int currentCall=0;
-		for(int index =0; ;index++)
-		{
-			if(index==players.length)
-			{
-				index=0;
-			}
-			if(players[index]!=null)
-			{
-				if(!players[index].isFolded())
-				{
-					if(lastRaise==null)
-					{
-						lastRaise=players[index];
-					}else if(lastRaise==players[index]){
-						break;
-					}
-					int roundBet=players[index].getRoundBet();
-					int bet = players[index].getBet(currentCall);
-					int playerTotalBet= bet+roundBet;
-					pot+=bet;
-					if(playerTotalBet>currentCall)
-					{
-						lastRaise=players[index];
-						currentCall=playerTotalBet;
-					}
-
-				}
-			}
-		}
+		/**
+		 * Do a round of betting in poker.
+		 */
 	}
 
 
@@ -154,7 +129,16 @@ public class Game
 	public void dealFlop(Deck deck)
 	{
 		/**
-		 * Put the flop onto the table
+		 * Put the flop onto the table.
+		 * 
+		 * How do I do this?
+		 * 
+		 * If you remember, we reset the cards
+		 * on the cards using tableCards. We
+		 * reset the array to be a blank array
+		 * with 5 cards in it. Now we have to
+		 * deal the flop and put the cards
+		 * onto the table.
 		 */
 	}
 
@@ -171,6 +155,7 @@ public class Game
 
 	public void checkForHighestHand()
 	{
+		
 	}
 
 	/**
@@ -205,6 +190,8 @@ public class Game
 				}catch(Exception e){e.printStackTrace();}
 			}
 
+			System.out.println(players[0].isReady() + "  " + players[0].isPlaying());
+			
 			// check for people who need to join the game.
 			for(Player p : players)
 				if(p != null)
@@ -231,7 +218,7 @@ public class Game
 
 	public void newTestGame()
 	{
-		for(int x = 0;x < 3;x++)
+		for(int x = 0;x < 6;x++)
 			addPlayer(new ComputerPlayer(x));
 	}
 
