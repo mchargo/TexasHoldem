@@ -96,7 +96,7 @@ public class Game
 			}
 		}
 	}
-
+//
 	public void dealStart(Deck deck)
 	{
 		for(int dealtCard =0; dealtCard<2; dealtCard++)
@@ -113,6 +113,7 @@ public class Game
 			}
 		}
 	}
+//
 
 	public void playRound()
 	{
@@ -148,7 +149,7 @@ public class Game
 			}
 		}
 	}
-
+//
 
 
 	public void dealFlop(Deck deck)
