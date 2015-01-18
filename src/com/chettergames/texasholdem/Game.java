@@ -175,18 +175,24 @@ public class Game
 
 	public Player findWinner()
 	{	
-		for(int index=0; index<players.length; index++)
+		int hands[] = new int[players.length];
+		Arrays.fill(hands, -1);
+		
+		for(int player = 0;player < players.length;player++)
 		{
-			if(players[index]!=null)
-			{
-				int numCurrentPlayers = 0;
-				if(!players[index].isFolded())
-				{
-					numCurrentPlayers++;
-				}
-			}
+			Card hand[] = new Card[tableCards.length + 2];
+			for(int x = 0;x < tableCards.length;x++)
+				hand[x] = tableCards[x];
+			hand[tableCards.length] = players[player].getCard1();
+			hand[tableCards.length + 1] = players[player].getCard2();
+			
+			if(checkForRoyalFlush(hand))
+				hands[player] = ROYAL_FLUSH;
+			else if(checkForStraightFlush(hand) != -1)
+				hands[player] = STRAIGHT_FLUSH;
+			
+			// continue here
 		}
-		Card playersHand [] = new Card[7];
 
 		return players[0];
 	}
@@ -480,7 +486,17 @@ public class Game
 	private int startChips;
 	private int startingAnte;
 
-	
+	public static final int NO_HAND 		= -1;
+	public static final int HIGH_CARD 		= 0;
+	public static final int PAIR 			= 1;
+	public static final int TWO_PAIR		= 2;
+	public static final int THREE_OF_A_KIND = 3;
+	public static final int STRAIGHT		= 4;
+	public static final int FLUSH			= 5;
+	public static final int FULL_HOUSE		= 6;
+	public static final int FOUR_OF_A_KIND	= 7;
+	public static final int STRAIGHT_FLUSH	= 8;
+	public static final int ROYAL_FLUSH		= 9;
 
 	public static void main(String args[])
 	{
