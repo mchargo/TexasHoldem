@@ -180,12 +180,32 @@ public class Game
 
 	public int checkForPair(Card cards[])
 	{
+		int vals[] = new int[Card.CARDS_IN_SUIT];
+		for(Card c : cards)
+			vals[c.getValue() - 2]++;
+		
+		for(int x = vals.length - 1;x >= 0;x--)
+			if(vals[x] > 2)
+				return (x + 2);
 		return -1;
 	}
 
-	public boolean checkForTwoPair(Card cards[])
+	public int checkForTwoPair(Card cards[])
 	{
-		return false;
+		int pairs = 0;
+		int vals[] = new int[Card.CARDS_IN_SUIT];
+		for(Card c : cards)
+			vals[c.getValue() - 2]++;
+		
+		for(int x = 0;x <= vals.length-1;x++)
+		{
+			if(vals[x] > 1)
+				pairs++;
+			if(pairs>=2)
+				return (x + 2);
+		}
+		
+		return -1;
 	}
 
 	/**
@@ -311,9 +331,16 @@ public class Game
 		return -1;
 	}
 
-	public boolean checkForFourOfAKind(Card cards[])
+	public int checkForFourOfAKind(Card cards[])
 	{
-		return false;
+		int vals[] = new int[Card.CARDS_IN_SUIT];
+		for(Card c : cards)
+			vals[c.getValue() - 2]++;
+		
+		for(int x = vals.length - 1;x >= 0;x--)
+			if(vals[x] > 3)
+				return (x + 2);
+		return -1;
 	}
 
 	public boolean checkForStraightFlush(Card cards[])
@@ -425,15 +452,15 @@ public class Game
 		Game game = new Game(6, 1000, 10);
 		
 		Card card1 = new Card(Card.VAL_2, Card.Type.CLUBS);
-		Card card2 = new Card(Card.VAL_3, Card.Type.HEARTS);
-		Card card3 = new Card(Card.VAL_3, Card.Type.HEARTS);
-		Card card4 = new Card(Card.VAL_3, Card.Type.HEARTS);
-		Card card5 = new Card(Card.VAL_ACE, Card.Type.HEARTS);
-		Card card6 = new Card(Card.VAL_ACE, Card.Type.HEARTS);
-		Card card7 = new Card(Card.VAL_ACE, Card.Type.SPADES);
+		Card card2 = new Card(Card.VAL_3, Card.Type.CLUBS);
+		Card card3 = new Card(Card.VAL_7, Card.Type.CLUBS);
+		Card card4 = new Card(Card.VAL_10, Card.Type.CLUBS);
+		Card card5 = new Card(Card.VAL_10, Card.Type.CLUBS);
+		Card card6 = new Card(Card.VAL_10, Card.Type.CLUBS);
+		Card card7 = new Card(Card.VAL_ACE, Card.Type.CLUBS);
 		
 		Card cards[] = new Card[]{card1, card2, card3, card4, card5, card6, card7};
-		int result = game.checkForFlush(cards) ? 1 : -1;
+		int result = game.checkForTwoPair(cards);
 		if(result >= 0)
 			System.out.println("highest card: " + result);
 		else System.out.println("No hand.");
