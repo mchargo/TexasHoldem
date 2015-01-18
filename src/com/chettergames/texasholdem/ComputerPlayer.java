@@ -59,9 +59,10 @@ public class ComputerPlayer extends Player
 		{
 			// we are going to raise
 			max = currentBet - getRoundBet();
+			// minimum raise = 5
 			max += random.nextInt(50) + 5;
 
-			if(max > chips)
+			if(max >= chips)
 			{
 				max = chips;
 				Output.gameln(name + " is all in.");
@@ -113,7 +114,7 @@ public class ComputerPlayer extends Player
 	{
 		try
 		{
-			Thread.sleep(1000);
+			//Thread.sleep(1000);
 		}catch(Exception e){}
 	}
 }

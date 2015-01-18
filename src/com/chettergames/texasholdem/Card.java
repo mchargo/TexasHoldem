@@ -42,5 +42,21 @@ public class Card
 	private int value;
 	private Type type;
 	
+	public static final int VAL_2 = 2;
+	public static final int VAL_3 = 3;
+	public static final int VAL_4 = 4;
+	public static final int VAL_5 = 5;
+	public static final int VAL_6 = 6;
+	public static final int VAL_7 = 7;
+	public static final int VAL_8 = 8;
+	public static final int VAL_9 = 9;
+	public static final int VAL_10 = 10;
+	public static final int VAL_JACK = 11;
+	public static final int VAL_QUEEN = 12;
+	public static final int VAL_KING = 13;
+	public static final int VAL_ACE = 14;
+	
+	public static final int CARDS_IN_SUIT = 13;
+	
 	public enum Type{HEARTS, DIAMONDS, SPADES, CLUBS}
 }

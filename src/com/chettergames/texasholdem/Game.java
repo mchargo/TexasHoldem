@@ -1,6 +1,9 @@
 package com.chettergames.texasholdem;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import com.chettergames.net.Output;
 
@@ -18,13 +21,10 @@ public class Game
 	{
 		int count = 0;
 
-		for(int index = 0; index<players.length; index++)
-		{
-			if(players[index]!=null)
-			{
-				count++;
-			}
-		}
+		for(Player p : players)
+			if(p != null) 
+				if(p.isReady()) count++;
+
 		return count;
 	}
 
@@ -39,113 +39,101 @@ public class Game
 				p.promptForName();
 				return true;
 			}
-
 		}
 		return false;
 	}
 
 	public synchronized void removePlayer(Player p)
 	{
-		/**
-		 * Remove the given player from the
-		 * array. In order to remove a player
-		 * from the array, search for where
-		 * the player is in the array, then
-		 * set that position to null.
-		 * 
-		 * For example, to test position 3:
-		 * 
-		 * boolean equal = players[3] == p;
-		 * 
-		 * if(equal)
-		 * {
-		 *     ... 
-		 * }
-		 */
-
-
+		for(int x = 0;x < players.length;x++)
+			if(players[x] == p)
+				players[x] = null;
 	}
 
 	public void prepareForNewRound()
 	{
 		for (int index=0; index<players.length; index++)
-		{
 			if(players[index]!=null)
-			{
 				if(players[index].isPlaying())
-				{
 					players[index].newRound();
-				}
-			}
-		}
+
 		pot = 0;
 		tableCards= new Card[5];
 	}
 	public void getAntes(int amount)
 	{
-
 		for(int index = 0; index<players.length; index++)
-		{
 			if(players[index]!=null)
-			{
 				if(!players[index].isFolded())
 				{
 					int ante = players[index].ante(amount);
-					pot+=ante;
+					pot += ante;
+
+					for(Player p : players)
+						if(p != null)p.playerAnted(ante, p);
 				}
-			}
-		}
 	}
 
 	public void dealStart(Deck deck)
 	{
-		for(int dealtCard =0; dealtCard<2; dealtCard++)
-		{
-			for(int index =0; index<players.length; index++)
-			{
-				if(players[index]!=null)
-				{
+		for(int dealtCard = 0;dealtCard < 2;dealtCard++)
+			for(int index = 0;index < players.length;index++)
+				if(players[index] != null)
 					if(!players[index].isFolded())
-					{
 						players[index].recieveCard(deck.drawCard());
-					}
-				}
-			}
-		}
 	}
 
 	public void playRound()
 	{
 		Player lastRaise = null;
 		int currentCall=0;
-		for(int index =0; ;index++)
+		for(int index = 0; ;index++)
 		{
-			if(index==players.length)
-			{
-				index=0;
-			}
-			if(players[index]!=null)
-			{
+			index %= players.length;
+
+			if(players[index] != null)
 				if(!players[index].isFolded())
 				{
-					if(lastRaise==null)
+					if(lastRaise == null)
 					{
-						lastRaise=players[index];
-					}else if(lastRaise==players[index]){
+						lastRaise = players[index];
+					}else if(lastRaise == players[index]){
 						break;
 					}
-					int roundBet=players[index].getRoundBet();
+
+					int roundBet = players[index].getRoundBet();
 					int bet = players[index].getBet(currentCall);
-					int playerTotalBet= bet+roundBet;
-					pot+=bet;
-					if(playerTotalBet>currentCall)
+
+					// they folded.
+					if(bet < 0) 
+					{
+						// let the other players know a player folded.
+						for(Player p : players)
+							if(p != null)
+								p.playerFolded(players[index]);
+						continue;
+					}
+
+					int playerTotalBet = bet + roundBet;
+					pot += bet;
+
+					if(playerTotalBet > currentCall)
 					{
 						lastRaise=players[index];
 						currentCall=playerTotalBet;
-					}
 
+						// let the other players know a player
+						// has raised
+						for(Player p : players)
+							if(p != null)
+								p.playerRaised(bet, players[index]);
+					}else{
+						// player has called.
+						for(Player p : players)
+							if(p != null)
+								p.playerCalled(players[index]);
+					}
 				}
-			}
 		}
 	}
 	public void dealFlop(Deck deck)
@@ -154,6 +142,12 @@ public class Game
 		tableCards[0]=deck.drawCard();
 		tableCards[1]=deck.drawCard();
 		tableCards[2]=deck.drawCard();
+
+		// notify players that the flop was dealt
+
+		for(Player p : players)
+			if(p != null)
+				p.flopDealt(tableCards);
 	}
 
 	public void dealTurn(Deck deck)
@@ -161,75 +155,156 @@ public class Game
 		deck.drawCard();
 		tableCards[3]=deck.drawCard();
 
+		// notify players that the turn was dealt
+		for(Player p : players)
+			if(p != null)
+				p.turnDealt(tableCards);
 	}
 
 	public void dealRiver(Deck deck)
 	{
 		deck.drawCard();
 		tableCards[4]=deck.drawCard();
+
+		// notify players that the river was dealt
+		for(Player p : players)
+			if(p != null)
+				p.riverDealt(tableCards);
 	}
 
 
-	public void checkForHighestHand()
+	public Player findWinner()
 	{
-		
+		return players[0];
 	}
-	
+
 	public boolean checkForPair(Card cards[])
 	{
-		int card1=cards[0].getValue();
-		int card2=cards[1].getValue();
-		int card3=cards[2].getValue();
-		int card4=cards[3].getValue();
-		int card5=cards[4].getValue();
-		int card6=cards[5].getValue();
-		int card7=cards[6].getValue();
-		int cardValues[]= new int[13];
+		return false;
+	}
+
+	public boolean checkForTwoPair(Card cards[])
+	{
+		return false;
+	}
+
+	/**
+	 * Return the highest value 3 of a kind in your hand.
+	 * -1 for no three of a kind
+	 * 
+	 * @param cards
+	 * @return The value of the highest 3 of a kind.
+	 */
+	public int checkForThreeOfAKind(Card cards[])
+	{
+		int vals[] = new int[Card.CARDS_IN_SUIT];
+		for(Card c : cards)
+			vals[c.getValue() - 2]++;
 		
-		//if()
-		return false;
+		for(int x = vals.length - 1;x >= 0;x--)
+			if(vals[x] > 2)
+				return (x + 2);
+		
+		return -1;
 	}
-	
-	public boolean checkForTwoPair()
+
+	/**
+	 * Check cards for a straight
+	 * @param cards The cards to check
+	 * @return The value of the highest card, -1 if no straight
+	 */
+	public int checkForStraight(Card cards[])
+	{
+		LinkedList<Integer> vals = new LinkedList<Integer>();
+		for(Card c : cards)
+			vals.add(c.getValue());
+		Collections.sort(vals);
+		
+		// remove doubles
+		for(int x = 0;x < vals.size() - 1;x++)
+		{
+			if(vals.get(x) == vals.get(x + 1))
+			{
+				vals.remove(x);
+				x--;
+			}
+		}
+		
+		if(vals.size() < 5) return -1;
+		int longestStreak = 0;
+		int highestCard = 0;
+		
+		int currStreak = 0;
+		int lastVal = 0;
+		
+		// ace can also be 1
+		if(vals.getLast() == Card.VAL_ACE)
+		{
+			lastVal = 1;
+			currStreak = 1;
+		}
+		
+		Iterator<Integer> it = vals.iterator();
+		while(it.hasNext())
+		{
+			int val = it.next();
+			if(currStreak == 0)
+			{
+				currStreak++;
+				lastVal = val;
+			} else {
+				if(val == lastVal + 1)
+				{
+					currStreak++;
+					lastVal = val;
+					
+					if(currStreak > 4)
+					{
+						highestCard = val;
+						longestStreak = currStreak;
+					}
+				} else {
+					currStreak = 1;
+					lastVal = val;
+				}
+			}
+		}
+		
+		if(longestStreak > 4)
+			return highestCard;
+		return -1;
+	}
+
+	public boolean checkForFlush(Card cards[])
+	{
+		int suits[] = new int[4];
+		for(Card c : cards)
+			switch(c.getType())
+			{
+
+			}
+	}
+
+	public boolean checkForFullHouse(Card cards[])
 	{
 		return false;
 	}
-	
-	public boolean checkForThreeOfAKind()
+
+	public boolean checkForFourOfAKind(Card cards[])
 	{
 		return false;
 	}
-	
-	public boolean checkForStraight()
+
+	public boolean checkForStraightFlush(Card cards[])
 	{
 		return false;
 	}
-	
-	public boolean checkForFlush()
+
+	public boolean checkForRoyalFlush(Card cards[])
 	{
 		return false;
 	}
-	
-	public boolean checkForFullHouse()
-	{
-		return false;
-	}
-	
-	public boolean checkForFourOfAKind()
-	{
-		return false;
-	}
-	
-	public boolean checkForStraightFlush()
-	{
-		return false;
-	}
-	
-	public boolean checkForRoyalFlush()
-	{
-		return false;
-	}
-	
+
 
 	/**
 	 * Play the game on a new Thread.
@@ -263,29 +338,52 @@ public class Game
 				}catch(Exception e){e.printStackTrace();}
 			}
 
-			System.out.println(players[0].isReady() + "  " + players[0].isPlaying());
-			
 			// check for people who need to join the game.
 			for(Player p : players)
 				if(p != null)
 					if(p.isReady() && !p.isPlaying())
+					{
 						p.joinGame(startChips);
+
+						// tell all players that p joined the game.
+						for(Player play : players)
+							if(play != null)
+								play.playerJoined(p);
+					}
 
 
 			Deck deck = new Deck();
+			Output.gameln("Deck has been shuffled.");
 
+			Output.gameln("Preparing for new round...");
 			prepareForNewRound(); // prepare for new round
+			Output.gameln("Getting antes...");
 			getAntes(startingAnte); // get ante from players
+			Output.gameln("Dealing cards...");
 			dealStart(deck); // deal cards to players
+			Output.gameln("Lets do a round of betting!");
 			playRound(); // play a round of betting
+			Output.gameln("Dealing the flop:");
 			dealFlop(deck); // deal the flop
+			for(int x = 0;x < 3;x++)
+				Output.gameln((x + 1) + ": " + tableCards[x]);
+			Output.gameln("Lets do a round of betting!");
 			playRound(); // play a round of betting
+			Output.gameln("Dealing the turn:");
 			dealTurn(deck); // deal the turn
+			Output.gameln(3 + ": " + tableCards[3]);
+			Output.gameln("Lets do a round of betting!");
 			playRound(); // play a round of betting
+			Output.gameln("Dealing the river:");
 			dealRiver(deck); // deal the river
+			Output.gameln(4 + ": " + tableCards[4]);
+			Output.gameln("Lets do the final round of betting!");
 			playRound(); // play the last round of betting
+			Player winner = findWinner(); // check for winner
+			Output.gameln(winner.getName() + " is the winner!");
+			winner.wonPot(pot);
 
-			checkForHighestHand(); // check for winner
+			try{Thread.sleep(10000);}catch(Exception e){}
 		}
 	}
 
@@ -304,6 +402,21 @@ public class Game
 	public static void main(String args[])
 	{
 		Game game = new Game(6, 1000, 10);
+		
+		Card card1 = new Card(Card.VAL_2, Card.Type.CLUBS);
+		Card card2 = new Card(Card.VAL_3, Card.Type.CLUBS);
+		Card card3 = new Card(Card.VAL_3, Card.Type.CLUBS);
+		Card card4 = new Card(Card.VAL_3, Card.Type.CLUBS);
+		Card card5 = new Card(Card.VAL_ACE, Card.Type.CLUBS);
+		Card card6 = new Card(Card.VAL_ACE, Card.Type.CLUBS);
+		Card card7 = new Card(Card.VAL_ACE, Card.Type.CLUBS);
+		
+		Card cards[] = new Card[]{card1, card2, card3, card4, card5, card6, card7};
+		int result = game.checkForThreeOfAKind(cards);
+		if(result >= 0)
+			System.out.println("highest card: " + result);
+		else System.out.println("No hand.");
+		System.exit(1);
 		game.newTestGame();
 		game.postPlayGame();
 	}

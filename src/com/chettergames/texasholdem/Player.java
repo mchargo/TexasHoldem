@@ -125,7 +125,29 @@ public abstract class Player
 	 * @return Whether or not the player is ready.
 	 */
 	public abstract boolean isReady();
+	
+	/**
+	 * Notify the player that another player
+	 * has joined the game.
+	 * @param player
+	 */
+	public void playerJoined(Player player){}
+	
+	/**
+	 * Tell the player that another player anted.
+	 * @param amount The amount that was anted.
+	 * @param p The player who anted.
+	 */
+	public void playerAnted(int amount, Player p){}
+	
+	public void playerFolded(Player p){}
+	public void playerCalled(Player p){}
+	public void playerRaised(int amount, Player p){}
+	public void flopDealt(Card cards[]){}
+	public void turnDealt(Card cards[]){}
+	public void riverDealt(Card cards[]){}
 
+	public int getChips(){return chips;}
 	public Card getCard1(){return card1;}
 	public Card getCard2(){return card2;}
 	public int getRoundBet(){return myRoundBet;}
