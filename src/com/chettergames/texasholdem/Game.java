@@ -328,11 +328,11 @@ public class Game
 	{
 		Game game = new Game(6, 1000, 10);
 
-		Card card1 = new Card(Card.VAL_2, Card.Type.SPADES);
+		Card card1 = new Card(Card.VAL_KING, Card.Type.DIAMONDS);
 		Card card2 = new Card(Card.VAL_JACK, Card.Type.HEARTS);
 		Card card3 = new Card(Card.VAL_QUEEN, Card.Type.HEARTS);
-		Card card4 = new Card(Card.VAL_KING, Card.Type.HEARTS);
-		Card card5 = new Card(Card.VAL_8, Card.Type.CLUBS);
+		Card card4 = new Card(Card.VAL_2, Card.Type.HEARTS);
+		Card card5 = new Card(Card.VAL_9, Card.Type.CLUBS);
 		Card card6 = new Card(Card.VAL_9, Card.Type.HEARTS);
 		Card card7 = new Card(Card.VAL_3, Card.Type.CLUBS);
 
