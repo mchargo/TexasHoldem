@@ -178,9 +178,9 @@ public class Game
 		return players[0];
 	}
 
-	public boolean checkForPair(Card cards[])
+	public int checkForPair(Card cards[])
 	{
-		return false;
+		return -1;
 	}
 
 	public boolean checkForTwoPair(Card cards[])
@@ -279,10 +279,7 @@ public class Game
 	{
 		int suits[] = new int[4];
 		for(Card c : cards)
-			switch(c.getType())
-			{
-
-			}
+			suits[c.typeToVal(c.getValue())]
 	}
 
 	public boolean checkForFullHouse(Card cards[])

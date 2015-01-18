@@ -35,6 +35,19 @@ public class Card
 		return printValue + suit;
 	}
 	
+	public int typeToVal(Type type)
+	{
+		switch(type)
+		{
+		case SPADES: return 3;
+		case CLUBS: return 0;
+		case DIAMONDS: return 2;
+		case HEARTS: return 1;
+		}
+		
+		return 0;
+	}
+	
 	public int getValue(){return value;}
 	public Type getType(){return type;}
 	
