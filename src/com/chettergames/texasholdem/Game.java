@@ -297,12 +297,12 @@ public class Game
 			playRound(); // play a round of betting
 			Output.gameln("Dealing the turn:");
 			dealTurn(deck); // deal the turn
-			Output.gameln(3 + ": " + tableCards[3]);
+			Output.gameln(4 + ": " + tableCards[3]);
 			Output.gameln("Lets do a round of betting!");
 			playRound(); // play a round of betting
 			Output.gameln("Dealing the river:");
 			dealRiver(deck); // deal the river
-			Output.gameln(4 + ": " + tableCards[4]);
+			Output.gameln(5 + ": " + tableCards[4]);
 			Output.gameln("Lets do the final round of betting!");
 			playRound(); // play the last round of betting
 			Player winners[] = findWinners(); // check for winner
