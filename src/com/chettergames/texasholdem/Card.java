@@ -7,7 +7,7 @@ public class Card
 		this.value = value;
 		this.type = type;
 	}
-	
+
 	public String toString()
 	{
 		String printValue = "";
@@ -21,7 +21,7 @@ public class Card
 			printValue = "King";
 		else if(value == 14)
 			printValue = "Ace";
-		
+
 		String suit = "";
 		if(type == Type.CLUBS)
 			suit = " of Clubs";
@@ -31,30 +31,30 @@ public class Card
 			suit = " of Hearts";
 		else if(type == Type.SPADES)
 			suit = " of Spades";
-		
+
 		return printValue + suit;
 	}
-	
-	public int typeToVal(Type type)
+
+	public static final int typeToVal(Type type)
 	{
 		switch(type)
 		{
-		case SPADES: return 3;
 		case CLUBS: return 0;
-		case DIAMONDS: return 2;
 		case HEARTS: return 1;
+		case DIAMONDS: return 2;
+		case SPADES: return 3;
 		}
-		
-		return 0;
+
+		return -1;
 	}
-	
+
 	public int getValue(){return value;}
 	public Type getType(){return type;}
-	
+
 	// 2 - 10, Jack = 11, Queen = 12, King = 13, Ace = 14
 	private int value;
 	private Type type;
-	
+
 	public static final int VAL_2 = 2;
 	public static final int VAL_3 = 3;
 	public static final int VAL_4 = 4;
@@ -68,8 +68,8 @@ public class Card
 	public static final int VAL_QUEEN = 12;
 	public static final int VAL_KING = 13;
 	public static final int VAL_ACE = 14;
-	
+
 	public static final int CARDS_IN_SUIT = 13;
-	
+
 	public enum Type{HEARTS, DIAMONDS, SPADES, CLUBS}
 }

@@ -279,12 +279,36 @@ public class Game
 	{
 		int suits[] = new int[4];
 		for(Card c : cards)
-			suits[c.typeToVal(c.getValue())]
+			suits[Card.typeToVal(c.getType())]++;
+		for(int suit : suits)
+			if(suit > 4) return true;
+		return false;
 	}
 
-	public boolean checkForFullHouse(Card cards[])
+	public int checkForFullHouse(Card cards[])
 	{
-		return false;
+		int vals[] = new int[Card.CARDS_IN_SUIT];
+		for(Card c : cards)
+			vals[c.getValue() - 2]++;
+		
+		boolean three = false;
+		boolean pair = false;
+		int val3 = 0;
+		
+		for(int x = vals.length - 1;x >= 0;x--)
+			if(vals[x] > 2 && !three)
+			{
+				three = true;
+				val3 = x + 2;
+			} else {
+				if(vals[x] > 1)
+					pair = true;
+			}
+		
+		if(three && pair)
+			return val3;
+		
+		return -1;
 	}
 
 	public boolean checkForFourOfAKind(Card cards[])
@@ -401,15 +425,15 @@ public class Game
 		Game game = new Game(6, 1000, 10);
 		
 		Card card1 = new Card(Card.VAL_2, Card.Type.CLUBS);
-		Card card2 = new Card(Card.VAL_3, Card.Type.CLUBS);
-		Card card3 = new Card(Card.VAL_3, Card.Type.CLUBS);
-		Card card4 = new Card(Card.VAL_3, Card.Type.CLUBS);
-		Card card5 = new Card(Card.VAL_ACE, Card.Type.CLUBS);
-		Card card6 = new Card(Card.VAL_ACE, Card.Type.CLUBS);
-		Card card7 = new Card(Card.VAL_ACE, Card.Type.CLUBS);
+		Card card2 = new Card(Card.VAL_3, Card.Type.HEARTS);
+		Card card3 = new Card(Card.VAL_3, Card.Type.HEARTS);
+		Card card4 = new Card(Card.VAL_3, Card.Type.HEARTS);
+		Card card5 = new Card(Card.VAL_ACE, Card.Type.HEARTS);
+		Card card6 = new Card(Card.VAL_ACE, Card.Type.HEARTS);
+		Card card7 = new Card(Card.VAL_ACE, Card.Type.SPADES);
 		
 		Card cards[] = new Card[]{card1, card2, card3, card4, card5, card6, card7};
-		int result = game.checkForThreeOfAKind(cards);
+		int result = game.checkForFlush(cards) ? 1 : -1;
 		if(result >= 0)
 			System.out.println("highest card: " + result);
 		else System.out.println("No hand.");
