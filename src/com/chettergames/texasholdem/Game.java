@@ -177,6 +177,11 @@ public class Game
 	{
 		return players[0];
 	}
+	
+	public int checkForHighCard(Card cards[])
+	{
+		return -1;
+	}
 
 	public int checkForPair(Card cards[])
 	{
