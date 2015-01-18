@@ -305,10 +305,12 @@ public class Game
 			Output.gameln("Lets do the final round of betting!");
 			playRound(); // play the last round of betting
 			Player winners[] = findWinners(); // check for winner
-			//Output.gameln(winner.getName() + " is the winner!");
-			//winner.wonPot(pot);
+			int chips = pot / winners.length;
+			for(Player p : winners)
+				p.wonPot(chips);
 
-			try{Thread.sleep(10000);}catch(Exception e){}
+			return;
+			//try{Thread.sleep(5000);}catch(Exception e){}
 		}
 	}
 
@@ -327,21 +329,6 @@ public class Game
 	public static void main(String args[])
 	{
 		Game game = new Game(6, 1000, 10);
-
-		Card card1 = new Card(Card.VAL_2, Card.Type.SPADES);
-		Card card2 = new Card(Card.VAL_JACK, Card.Type.HEARTS);
-		Card card3 = new Card(Card.VAL_QUEEN, Card.Type.HEARTS);
-		Card card4 = new Card(Card.VAL_KING, Card.Type.HEARTS);
-		Card card5 = new Card(Card.VAL_8, Card.Type.CLUBS);
-		Card card6 = new Card(Card.VAL_9, Card.Type.HEARTS);
-		Card card7 = new Card(Card.VAL_3, Card.Type.CLUBS);
-
-		Card cards[] = new Card[]{card1, card2, card3, card4, card5, card6, card7};
-		Hand hand = new Hand(cards[5], cards[6], cards, null);
-		hand.calculateHand();
-		System.out.println(hand);
-		
-		System.exit(1);
 		game.newTestGame();
 		game.postPlayGame();
 	}

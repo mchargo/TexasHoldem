@@ -72,7 +72,7 @@ public class Hand
 			vals[c.getValue() - 2]++;
 
 		for(int x = vals.length - 1;x >= 0;x--)
-			if(vals[x] > 2)
+			if(vals[x] > 1)
 				return (x + 2);
 		return -1;
 	}
