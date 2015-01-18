@@ -295,14 +295,14 @@ public class Game
 		return -1;
 	}
 
-	public boolean checkForFlush(Card cards[])
+	public int checkForFlush(Card cards[])
 	{
 		int suits[] = new int[4];
 		for(Card c : cards)
 			suits[Card.typeToVal(c.getType())]++;
-		for(int suit : suits)
-			if(suit > 4) return true;
-		return false;
+		for(int x = 0;x < suits.length;x++)
+			if(suits[x] > 4) return x; 
+		return -1;
 	}
 
 	public int checkForFullHouse(Card cards[])
@@ -343,9 +343,20 @@ public class Game
 		return -1;
 	}
 
-	public boolean checkForStraightFlush(Card cards[])
+	public int checkForStraightFlush(Card cards[])
 	{
-		return false;
+		int suit = checkForFlush(cards);
+		if(suit == -1) return -1;
+		LinkedList<Card> remainingCards = new LinkedList<Card>();
+		for(Card c : cards)
+			if(Card.typeToVal(c.getType()) == suit)
+				remainingCards.add(c);
+		
+		cards = new Card[remainingCards.size()];
+		for(int x = 0;x < remainingCards.size();x++)
+			cards[x] = remainingCards.get(x);
+		
+		return checkForStraight(cards);
 	}
 
 	public boolean checkForRoyalFlush(Card cards[])
@@ -451,16 +462,16 @@ public class Game
 	{
 		Game game = new Game(6, 1000, 10);
 		
-		Card card1 = new Card(Card.VAL_2, Card.Type.CLUBS);
-		Card card2 = new Card(Card.VAL_3, Card.Type.CLUBS);
-		Card card3 = new Card(Card.VAL_7, Card.Type.CLUBS);
-		Card card4 = new Card(Card.VAL_10, Card.Type.CLUBS);
-		Card card5 = new Card(Card.VAL_10, Card.Type.CLUBS);
-		Card card6 = new Card(Card.VAL_10, Card.Type.CLUBS);
-		Card card7 = new Card(Card.VAL_ACE, Card.Type.CLUBS);
+		Card card1 = new Card(Card.VAL_10, Card.Type.HEARTS);
+		Card card2 = new Card(Card.VAL_JACK, Card.Type.HEARTS);
+		Card card3 = new Card(Card.VAL_QUEEN, Card.Type.HEARTS);
+		Card card4 = new Card(Card.VAL_KING, Card.Type.HEARTS);
+		Card card5 = new Card(Card.VAL_ACE, Card.Type.CLUBS);
+		Card card6 = new Card(Card.VAL_9, Card.Type.HEARTS);
+		Card card7 = new Card(Card.VAL_3, Card.Type.CLUBS);
 		
 		Card cards[] = new Card[]{card1, card2, card3, card4, card5, card6, card7};
-		int result = game.checkForTwoPair(cards);
+		int result = game.checkForStraightFlush(cards);
 		if(result >= 0)
 			System.out.println("highest card: " + result);
 		else System.out.println("No hand.");
