@@ -6,14 +6,41 @@ import java.util.LinkedList;
 
 public class Hand 
 {
-	public Hand(Card card1, Card card2, Card tableCards[])
+	public Hand(Card card1, Card card2, Card tableCards[], Player owner)
 	{
-		
+		cards = new Card[7];
+		for(int x = 0;x < 5;x++)
+			cards[x] = tableCards[x];
+		cards[tableCards.length] = card1;
+		cards[tableCards.length + 1] = card2;
+		value = -1;
+		type = -1;
+		this.owner = owner;
 	}
 	
 	public void calculateHand()
 	{
-		
+		if(checkForRoyalFlush(cards))
+			type = ROYAL_FLUSH;
+		else if((value = checkForStraightFlush(cards)) != -1)
+			type = STRAIGHT_FLUSH;
+		else if((value = checkForFourOfAKind(cards)) != -1)
+			type = FOUR_OF_A_KIND;
+		else if((value = checkForFullHouse(cards)) != -1)
+			type = FULL_HOUSE;
+		else if((value = checkForFlush(cards)) != -1)
+			type = FLUSH;
+		else if((value = checkForStraight(cards)) != -1)
+			type = STRAIGHT;
+		else if((value = checkForThreeOfAKind(cards)) != -1)
+			type = THREE_OF_A_KIND;
+		else if((value = checkForTwoPair(cards)) != -1)
+			type = TWO_PAIR;
+		else if((value = checkForPair(cards)) != -1)
+			type = PAIR;
+		else if((value = checkForHighCard(cards)) != -1)
+			type = HIGH_CARD;
+		else type = NO_HAND;
 	}
 	
 	public int getType()
@@ -228,9 +255,15 @@ public class Hand
 		return false;
 	}
 	
+	public Player getOwner()
+	{
+		return owner;
+	}
+	
 	private Card cards[];
 	private int value;
 	private int type;
+	private Player owner;
 	
 	public static final int NO_HAND 		= -1;
 	public static final int HIGH_CARD 		= 0;

@@ -1,8 +1,6 @@
 package com.chettergames.texasholdem;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import com.chettergames.net.Output;
@@ -173,32 +171,65 @@ public class Game
 	}
 
 
-	public Player findWinner()
+	public Player[] findWinners()
 	{	
-		int hands[] = new int[players.length];
-		int value[] = new int[players.length];
-		Arrays.fill(hands, -1);
-		Arrays.fill(value, -1);
-
+		Hand[] hands = new Hand[players.length];
 		for(int player = 0;player < players.length;player++)
 		{
-			Card hand[] = new Card[tableCards.length + 2];
-			for(int x = 0;x < tableCards.length;x++)
-				hand[x] = tableCards[x];
-			hand[tableCards.length] = players[player].getCard1();
-			hand[tableCards.length + 1] = players[player].getCard2();
-
-			if(checkForRoyalFlush(hand))
-				hands[player] = ROYAL_FLUSH;
-			else if(checkForStraightFlush(hand) != -1)
-				hands[player] = STRAIGHT_FLUSH;
-
-			// continue here
+			if(players[player] != null)
+			{
+				if(!players[player].isFolded())
+				{
+					hands[player] = new Hand(players[player].getCard1(),
+							players[player].getCard2(),
+							tableCards, players[player]);
+					hands[player].calculateHand();
+				}
+			}
+		}
+		
+		LinkedList<Player> winners = new LinkedList<Player>();
+		
+		int highestType = -1;
+		int highestValue = -1;
+		
+		for(Hand hand : hands)
+		{
+			if(hand == null) continue;
+			int type = hand.getType();
+			int val = hand.getValue();
+			
+			if(type == highestType)
+			{
+				if(val == highestValue)
+					winners.add(hand.getOwner()); // same hand
+				else if(val > highestValue)
+				{
+					// better hand
+					winners = new LinkedList<Player>();
+					winners.add(hand.getOwner());
+					
+					highestValue = val;
+				} else continue; // you lost
+			} else if(type > highestType)
+			{
+				// better hand
+				winners = new LinkedList<Player>();
+				winners.add(hand.getOwner());
+				
+				highestType = type;
+				highestValue = val;
+			}else continue; // you lost!
 		}
 
-		return players[0];
+		if(winners.size() == 1) return new Player[]{winners.getFirst()};
+		
+		Player[] result = new Player[winners.size()];
+		for(int x = 0;x < result.length;x++)
+			result[x] = winners.get(x);
+		
+		return result;
 	}
-
 
 	/**
 	 * Play the game on a new Thread.
@@ -273,9 +304,9 @@ public class Game
 			Output.gameln(4 + ": " + tableCards[4]);
 			Output.gameln("Lets do the final round of betting!");
 			playRound(); // play the last round of betting
-			Player winner = findWinner(); // check for winner
-			Output.gameln(winner.getName() + " is the winner!");
-			winner.wonPot(pot);
+			Player winners[] = findWinners(); // check for winner
+			//Output.gameln(winner.getName() + " is the winner!");
+			//winner.wonPot(pot);
 
 			try{Thread.sleep(10000);}catch(Exception e){}
 		}
@@ -306,6 +337,7 @@ public class Game
 		Card card7 = new Card(Card.VAL_3, Card.Type.CLUBS);
 
 		Card cards[] = new Card[]{card1, card2, card3, card4, card5, card6, card7};
+		Hand hand = new Hand(cards[6], cards[7], cards, null);
 		int result = 0;//game.checkForHighCard(cards);
 		if(result >= 0)
 			System.out.println("highest card: " + result);
