@@ -337,11 +337,10 @@ public class Game
 		Card card7 = new Card(Card.VAL_3, Card.Type.CLUBS);
 
 		Card cards[] = new Card[]{card1, card2, card3, card4, card5, card6, card7};
-		Hand hand = new Hand(cards[6], cards[7], cards, null);
-		int result = 0;//game.checkForHighCard(cards);
-		if(result >= 0)
-			System.out.println("highest card: " + result);
-		else System.out.println("No hand.");
+		Hand hand = new Hand(cards[5], cards[6], cards, null);
+		hand.calculateHand();
+		System.out.println(hand);
+		
 		System.exit(1);
 		game.newTestGame();
 		game.postPlayGame();

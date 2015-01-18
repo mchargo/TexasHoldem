@@ -11,8 +11,8 @@ public class Hand
 		cards = new Card[7];
 		for(int x = 0;x < 5;x++)
 			cards[x] = tableCards[x];
-		cards[tableCards.length] = card1;
-		cards[tableCards.length + 1] = card2;
+		cards[5] = card1;
+		cards[6] = card2;
 		value = -1;
 		type = -1;
 		this.owner = owner;
@@ -258,6 +258,50 @@ public class Hand
 	public Player getOwner()
 	{
 		return owner;
+	}
+	
+	public String toString()
+	{
+		String hand = "";
+		
+		switch(type)
+		{
+		case NO_HAND:
+			hand = "No hand";
+			break;
+		case HIGH_CARD:
+			hand = "High card";
+			break;
+		case PAIR:
+			hand = "Pair";
+			break;
+		case TWO_PAIR:
+			hand = "2 pair";
+			break;
+		case THREE_OF_A_KIND:
+			hand = "3 of a kind";
+			break;
+		case STRAIGHT:
+			hand = "Straight";
+			break;
+		case FLUSH:
+			hand = "Flush";
+			break;
+		case FULL_HOUSE:
+			hand = "Full House";
+			break;
+		case FOUR_OF_A_KIND:
+			hand = "Four of a kind";
+			break;
+		case STRAIGHT_FLUSH:
+			hand = "Straight Flush";
+			break;
+		case ROYAL_FLUSH:
+			hand = "Royal Flush";
+			break;
+		}
+		
+		return hand + ": " + value;
 	}
 	
 	private Card cards[];
