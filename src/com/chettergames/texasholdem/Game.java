@@ -174,7 +174,20 @@ public class Game
 
 
 	public Player findWinner()
-	{
+	{	
+		for(int index=0; index<players.length; index++)
+		{
+			if(players[index]!=null)
+			{
+				int numCurrentPlayers = 0;
+				if(!players[index].isFolded())
+				{
+					numCurrentPlayers++;
+				}
+			}
+		}
+		Card playersHand [] = new Card[7];
+
 		return players[0];
 	}
 	
@@ -188,7 +201,7 @@ public class Game
 		int vals[] = new int[Card.CARDS_IN_SUIT];
 		for(Card c : cards)
 			vals[c.getValue() - 2]++;
-		
+
 		for(int x = vals.length - 1;x >= 0;x--)
 			if(vals[x] > 2)
 				return (x + 2);
@@ -201,7 +214,7 @@ public class Game
 		int vals[] = new int[Card.CARDS_IN_SUIT];
 		for(Card c : cards)
 			vals[c.getValue() - 2]++;
-		
+
 		for(int x = 0;x <= vals.length-1;x++)
 		{
 			if(vals[x] > 1)
@@ -209,7 +222,7 @@ public class Game
 			if(pairs>=2)
 				return (x + 2);
 		}
-		
+
 		return -1;
 	}
 
@@ -225,11 +238,11 @@ public class Game
 		int vals[] = new int[Card.CARDS_IN_SUIT];
 		for(Card c : cards)
 			vals[c.getValue() - 2]++;
-		
+
 		for(int x = vals.length - 1;x >= 0;x--)
 			if(vals[x] > 2)
 				return (x + 2);
-		
+
 		return -1;
 	}
 
@@ -244,7 +257,7 @@ public class Game
 		for(Card c : cards)
 			vals.add(c.getValue());
 		Collections.sort(vals);
-		
+
 		// remove doubles
 		for(int x = 0;x < vals.size() - 1;x++)
 		{
@@ -254,21 +267,21 @@ public class Game
 				x--;
 			}
 		}
-		
+
 		if(vals.size() < 5) return -1;
 		int longestStreak = 0;
 		int highestCard = 0;
-		
+
 		int currStreak = 0;
 		int lastVal = 0;
-		
+
 		// ace can also be 1
 		if(vals.getLast() == Card.VAL_ACE)
 		{
 			lastVal = 1;
 			currStreak = 1;
 		}
-		
+
 		Iterator<Integer> it = vals.iterator();
 		while(it.hasNext())
 		{
@@ -282,7 +295,7 @@ public class Game
 				{
 					currStreak++;
 					lastVal = val;
-					
+
 					if(currStreak > 4)
 					{
 						highestCard = val;
@@ -294,7 +307,7 @@ public class Game
 				}
 			}
 		}
-		
+
 		if(longestStreak > 4)
 			return highestCard;
 		return -1;
@@ -315,11 +328,11 @@ public class Game
 		int vals[] = new int[Card.CARDS_IN_SUIT];
 		for(Card c : cards)
 			vals[c.getValue() - 2]++;
-		
+
 		boolean three = false;
 		boolean pair = false;
 		int val3 = 0;
-		
+
 		for(int x = vals.length - 1;x >= 0;x--)
 			if(vals[x] > 2 && !three)
 			{
@@ -329,10 +342,10 @@ public class Game
 				if(vals[x] > 1)
 					pair = true;
 			}
-		
+
 		if(three && pair)
 			return val3;
-		
+
 		return -1;
 	}
 
@@ -341,7 +354,7 @@ public class Game
 		int vals[] = new int[Card.CARDS_IN_SUIT];
 		for(Card c : cards)
 			vals[c.getValue() - 2]++;
-		
+
 		for(int x = vals.length - 1;x >= 0;x--)
 			if(vals[x] > 3)
 				return (x + 2);
@@ -366,6 +379,10 @@ public class Game
 
 	public boolean checkForRoyalFlush(Card cards[])
 	{
+		if(checkForStraightFlush(cards)==14)
+		{
+			return true;
+		}
 		return false;
 	}
 
@@ -462,6 +479,8 @@ public class Game
 	private int pot;
 	private int startChips;
 	private int startingAnte;
+
+	
 
 	public static void main(String args[])
 	{
