@@ -190,6 +190,22 @@ public class Game
 				hands[player] = ROYAL_FLUSH;
 			else if(checkForStraightFlush(hand) != -1)
 				hands[player] = STRAIGHT_FLUSH;
+			else if(checkForFourOfAKind(hand) != -1)
+				hands[player] = FOUR_OF_A_KIND;
+			else if(checkForFullHouse(hand) != -1)
+				hands[player] = FULL_HOUSE;
+			else if(checkForFlush(hand) != -1)
+				hands[player] = FLUSH;
+			else if(this.checkForStraight(hand) != -1)
+				hands[player] = STRAIGHT;
+			else if(this.checkForThreeOfAKind(hand) != -1)
+				hands[player] = THREE_OF_A_KIND;
+			else if(this.checkForTwoPair(hand) != -1)
+				hands[player] = TWO_PAIR;
+			else if(this.checkForPair(hand) != -1)
+				hands[player] = PAIR;
+			else if(this.checkForHighCard(hand) != -1)
+				hands[player] = HIGH_CARD;
 			
 			// continue here
 		}
