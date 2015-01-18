@@ -184,6 +184,7 @@ public class Game
 							players[player].getCard2(),
 							tableCards, players[player]);
 					hands[player].calculateHand();
+					Output.gameln(players[player].getName() + " has a " + hands[player]);
 				}
 			}
 		}
