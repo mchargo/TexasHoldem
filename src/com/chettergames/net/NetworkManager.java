@@ -144,9 +144,31 @@ public class NetworkManager
 		{
 			public void run()
 			{
-				listener.messageReceived(message);
+				BufferBuilder buffer = new BufferBuilder(message, 0);
+				listener.messageReceived(buffer);
+				buffer = null;
 			}
 		}).start();
+	}
+	
+	/**
+	 * Send one byte across the network.
+	 * @param flag
+	 * @return Whether or not the communication was successful.
+	 */
+	public boolean sendFlag(byte flag)
+	{
+		return sendData(new byte[]{flag});
+	}
+	
+	/**
+	 * Send a buffer across the network.
+	 * @param buffer The buffer to send.
+	 * @return Whether or not the communication was successful.
+	 */
+	public boolean sendBuffer(BufferBuilder buffer)
+	{
+		return sendData(buffer.getBuffer());
 	}
 
 	/** 
@@ -154,7 +176,7 @@ public class NetworkManager
 	 * @param buffer The buffer to send.
 	 * @return Whether or not the message was sent.
 	 */
-	public boolean sendData(byte[] buffer)
+	private boolean sendData(byte[] buffer)
 	{
 		Output.net("Buffer length: " + buffer.length);
 		Output.net("Sending buffer...\t\t\t");
@@ -196,8 +218,13 @@ public class NetworkManager
 		if(listener != null)
 			postMessageToListener(message);
 	}
+	
+	public BufferBuilder blockForBuffer(byte[] flags)
+	{
+		return new BufferBuilder(blockForFlags(flags), 0);
+	}
 
-	public byte[] blockForFlags(byte[] flags)
+	private byte[] blockForFlags(byte[] flags)
 	{
 		while(true)
 		{

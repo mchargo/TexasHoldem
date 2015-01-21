@@ -1,11 +1,31 @@
 package com.chettergames.texasholdem;
 
-public class Card 
+import com.chettergames.net.BufferBuilder;
+import com.chettergames.net.BufferParcelable;
+
+public class Card implements BufferParcelable
 {
 	public Card(int value, Type type)
 	{
 		this.value = value;
 		this.type = type;
+	}
+	
+	public Card(BufferBuilder buffer)
+	{
+		value = buffer.pullInt();
+		type = valToType(buffer.pullInt());
+	}
+	
+	public void pushToBuffer(BufferBuilder buffer)
+	{
+		buffer.pushInt(value);
+		buffer.pushInt(typeToVal(type));
+	}
+	
+	public int calculateSize()
+	{
+		return 8;
 	}
 
 	public String toString()
@@ -46,6 +66,19 @@ public class Card
 		}
 
 		return -1;
+	}
+	
+	public static final Type valToType(int val)
+	{
+		switch(val)
+		{
+		case 0: return Type.CLUBS;
+		case 1: return Type.HEARTS;
+		case 2: return Type.DIAMONDS;
+		case 3: return Type.SPADES;
+		}
+
+		return null;
 	}
 
 	public int getValue(){return value;}

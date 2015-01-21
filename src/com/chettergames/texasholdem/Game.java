@@ -156,7 +156,7 @@ public class Game
 		// notify players that the turn was dealt
 		for(Player p : players)
 			if(p != null)
-				p.turnDealt(tableCards);
+				p.turnDealt(tableCards[3]);
 	}
 
 	public void dealRiver(Deck deck)
@@ -167,7 +167,7 @@ public class Game
 		// notify players that the river was dealt
 		for(Player p : players)
 			if(p != null)
-				p.riverDealt(tableCards);
+				p.riverDealt(tableCards[4]);
 	}
 
 

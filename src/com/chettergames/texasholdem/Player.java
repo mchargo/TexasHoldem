@@ -141,11 +141,13 @@ public abstract class Player
 	public void playerAnted(int amount, Player p){}
 	
 	public void playerFolded(Player p){}
-	public void playerCalled(Player p){}
-	public void playerRaised(int amount, Player p){}
+	public void playerCheck(Player p){}
+	public void playerCalled(int tableBet, Player p){}
+	public void playerRaised(int tableBet, Player p){}
+	
 	public void flopDealt(Card cards[]){}
-	public void turnDealt(Card cards[]){}
-	public void riverDealt(Card cards[]){}
+	public void turnDealt(Card card){}
+	public void riverDealt(Card card){}
 
 	public int getChips(){return chips;}
 	public Card getCard1(){return card1;}
